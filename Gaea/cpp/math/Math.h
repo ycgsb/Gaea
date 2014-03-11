@@ -23,6 +23,9 @@ namespace Math {
     static int sum(const int *a, int length);
     static int power(int x, int p);
 
+    inline double sin(double x) { return ::sin(x); }
+    inline double cos(double x) { return ::cos(x); }
+
     template <class Iter> double mean(Iter begin, Iter end);
     template <class Iter> double var(Iter begin, Iter end);
     template <class Iter> double std(Iter begin, Iter end);

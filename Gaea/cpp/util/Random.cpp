@@ -17,23 +17,23 @@ Random::Random() {
 }
 
 double Random::gauss() {
-    static double V1, V2, S;
+    static double v1, v2, s;
     static int phase = 0;
-    double X;
+    double x;
     if (phase == 0) {
     	do {
             double U1 = nextDouble();
             double U2 = nextDouble();
-            V1 = 2 * U1 - 1;
-            V2 = 2 * U2 - 1;
-            S = V1 * V1 + V2 * V2;
-        } while(S >= 1 || S == 0);
-        X = V1 * sqrt(-2 * log(S) / S);
+            v1 = 2 * U1 - 1;
+            v2 = 2 * U2 - 1;
+            s = v1 * v1 + v2 * v2;
+        } while(s >= 1 || s == 0);
+        x = v1 * sqrt(-2 * log(s) / s);
     } else {
-        X = V2 * sqrt(-2 * log(S) / S);
+        x = v2 * sqrt(-2 * log(s) / s);
     }
     phase = 1 - phase;
-    return X;
+    return x;
 }
 
 double Random::gauss(double mean, double std) {

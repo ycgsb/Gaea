@@ -1,21 +1,17 @@
-/*
- * DatasetRegression.h
- *
- *  Created on: 2013年11月17日
- *      Author: ChenguangYu
- */
+#ifndef DATASETREGRESSION_H
+#define DATASETREGRESSION_H
 
-#ifndef DATASETREGRESSION_H_
-#define DATASETREGRESSION_H_
+#include "DatasetSupervised.h"
 
 namespace ycg {
 
-class DatasetRegression {
+class DatasetRegression : public DatasetSupervised {
 public:
 	DatasetRegression();
 	virtual ~DatasetRegression();
+
 };
 
 } /* namespace ycg */
 
-#endif /* DATASETREGRESSION_H_ */
+#endif /* DATASETREGRESSION_H */

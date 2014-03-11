@@ -1,16 +1,19 @@
 #ifndef DATASETCLASSIFICATION_H
 #define DATASETCLASSIFICATION_H
 
+#include "DatasetSupervised.h"
 #include "../../numerical/Vector.h"
 #include "../../util/ArrayList.h"
+#include <string>
 #include <cassert>
 
 namespace ycg {
 
-class DatasetClassification {
+class DatasetClassification : public DatasetSupervised {
 public:
 	DatasetClassification();
 	DatasetClassification(const char *fileName);
+	DatasetClassification(const std::string fileName);
 	virtual ~DatasetClassification();
     int size() const;
 	int dimension() const;

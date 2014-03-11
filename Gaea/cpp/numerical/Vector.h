@@ -2,6 +2,7 @@
 #define VECTOR_H
 
 #include "Common.h"
+#include <iostream>
 #include <cassert>
 
 namespace ycg {
@@ -14,13 +15,16 @@ public:
     Vector(const Vector& orig);
     Vector(Vector&& orig);
 	~Vector();
-	int size() const;
-	double& operator [] (int index);
-    const double& operator [] (int index) const;
-    double& operator () (int index);
-    const double& operator () (int index) const;
 	Vector& operator = (const Vector& rhs);
+	Vector& operator = (Vector&& rhs);
 
+	int size() const { return _size; };
+	double& operator [] (int index) { return _data[index]; }
+    const double& operator [] (int index) const { return _data[index]; }
+    double& operator () (int index) { return _data[index]; }
+    const double& operator () (int index) const { return _data[index]; }
+
+    friend std::ostream& operator << (std::ostream& os, const Vector& vec);
 
 
 //
@@ -46,25 +50,7 @@ private:
 	double* _data;
 };
 
-inline int Vector::size() const {
-    return _size;
-}
-
-inline double& Vector::operator [] (int index) {
-    return _data[index];
-}
-
-inline const double& Vector::operator [] (int index) const {
-    return _data[index];
-}
-
-inline double& Vector::operator () (int index) {
-    return _data[index];
-}
-
-inline const double& Vector::operator () (int index) const {
-    return _data[index];
-}
+std::ostream& operator << (std::ostream& os, const Vector& vec);
 
 //inline Vector operator * (double k, const Vector& vec) {
 //    return vec * k;

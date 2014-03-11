@@ -9,16 +9,16 @@ Vector::Vector() :
 	_data(nullptr) { }
 
 Vector::Vector(int size, double initValue) :
-	_size(size) {
-    _data = new double[_size];
+	_size(size),
+	_data(new double[_size]) {
     for (int i = 0; i < _size; ++i) {
         _data[i] = initValue;
     }
 }
 
 Vector::Vector(int size, bool needInit, double initValue) :
-	_size(size) {
-    _data = new double[_size];
+	_size(size),
+	_data(new double[_size]) {
     if (needInit) {
     	for (int i = 0; i < _size; ++i) {
     		_data[i] = initValue;
@@ -60,6 +60,17 @@ Vector& Vector::operator = (const Vector& rhs) {
         _data[i] = rhs._data[i];
     }
     return *this;
+}
+
+Vector& Vector::operator =  (Vector&& rhs) {
+	if (this == &rhs) {
+		return *this;
+	}
+	freeData();
+	_size = rhs._size;
+	_data = rhs._data;
+	rhs._data = nullptr;
+	return *this;
 }
 
 //Vector Vector::operator + (const Vector& rhs) const {
@@ -138,6 +149,14 @@ double Vector::distanceL2(const Vector& lhs, const Vector& rhs) {
 //    }
 //    return norm;
 //}
+
+std::ostream& operator << (std::ostream& os, const Vector& vec) {
+	for (int i = 0; i < vec._size; ++i) {
+		if (i > 0) { os << " "; }
+		os << vec._data[i];
+	}
+	return os;
+}
 
 void print(const Vector& vec) {
 	Writer writer;
