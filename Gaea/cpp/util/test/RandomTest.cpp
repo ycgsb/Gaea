@@ -6,40 +6,71 @@
 namespace ycg {
 
 void RandomTest::run() {
-	testUniform();
+	testUniformInt();
+	testUniformDouble();
+	testGaussStandard();
 	testGauss();
 }
 
-void RandomTest::testUniform() {
-	printf("test uniform random generator.\n");
+void RandomTest::testUniformInt() {
+	printf("test uniform int:\n");
 	Random& rnd = Random::instance();
 	int a = 10, b = 200;
+	double mean = (a+b)/2;
+	double var = Math::sqr(a-b)/12;
 	std::vector<int> numbers;
-	for (int i = 0; i < BIG_NUM; ++i) {
+	for (int i = 0; i < BIG; ++i) {
 		numbers.push_back(rnd.uniform(a, b));
 	}
-	double mean_gt = (a+b)/2;
-	double mean = Math::mean(numbers.cbegin(), numbers.cend());
-	double var_gt = Math::sqr(a-b)/12;
-	double var = Math::var(numbers.cbegin(), numbers.cend());
-	printf("mean_gt = %lf, mean = %lf\n",mean_gt, mean);
-	printf("var_gt = %lf, var = %lf\n",var_gt, var);
+	double meanData = Math::mean(numbers.cbegin(), numbers.cend());
+	double varData = Math::var(numbers.cbegin(), numbers.cend());
+	printf("mean = %lf, meanData = %lf\n", mean, meanData);
+	printf("var = %lf, varData = %lf\n", var, varData);
+}
+
+void RandomTest::testUniformDouble() {
+	printf("test uniform double:\n");
+	Random& rnd = Random::instance();
+	double a = 1.0, b = 20.0;
+	double mean = (a + b) / 2;
+	double var = Math::sqr(a - b) / 12;
+	std::vector<double> numbers;
+	for (int i = 0; i < BIG; ++i) {
+		numbers.push_back(rnd.uniform(a, b));
+	}
+	double meanData = Math::mean(numbers.cbegin(), numbers.cend());
+	double varData = Math::var(numbers.cbegin(), numbers.cend());
+	printf("mean = %lf, meanData = %lf\n", mean, meanData);
+	printf("var = %lf, varData = %lf\n", var, varData);
+}
+
+void RandomTest::testGaussStandard() {
+	printf("test uniform random generator.\n");
+	Random& rnd = Random::instance();
+	std::vector<double> numbers;
+	for (int i = 0; i < BIG; ++i) {
+		numbers.push_back(rnd.gauss());
+	}
+	double meanData = Math::mean(numbers.cbegin(), numbers.cend());
+	double stdData = Math::std(numbers.cbegin(), numbers.cend());
+	printf("mean = %lf, meanData = %lf\n", 0.0, meanData);
+	printf("std = %lf, stdData = %lf\n", 1.0, stdData);
+
 }
 
 void RandomTest::testGauss() {
 	printf("test uniform random generator.\n");
 	Random& rnd = Random::instance();
-	int a = 10, b = 200;
-	std::vector<int> numbers;
-	for (int i = 0; i < BIG_NUM; ++i) {
-		numbers.push_back(rnd.uniform(a, b));
+	double mean = 10.0;
+	double std = 2.0;
+	std::vector<double> numbers;
+	for (int i = 0; i < BIG; ++i) {
+		numbers.push_back(rnd.gauss(mean, std));
 	}
-	double mean_gt = (a+b)/2;
-	double mean = Math::mean(numbers.cbegin(), numbers.cend());
-	double var_gt = Math::sqr(a-b)/12;
-	double var = Math::var(numbers.cbegin(), numbers.cend());
-	printf("mean_gt = %lf, mean = %lf\n",mean_gt, mean);
-	printf("var_gt = %lf, var = %lf\n",var_gt, var);
+	double meanData = Math::mean(numbers.cbegin(), numbers.cend());
+	double stdData = Math::std(numbers.cbegin(), numbers.cend());
+	printf("mean = %lf, meanData = %lf\n", mean, meanData);
+	printf("std = %lf, stdData = %lf\n", std, stdData);
 
 }
 } //~ namespace ycg

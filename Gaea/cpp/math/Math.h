@@ -25,6 +25,7 @@ namespace Math {
 
     template <class Iter> double mean(Iter begin, Iter end);
     template <class Iter> double var(Iter begin, Iter end);
+    template <class Iter> double std(Iter begin, Iter end);
 
 } //~ namespace math
 
@@ -58,6 +59,15 @@ inline double Math::abs(double x) {
 	return (x >= 0) ? x : -x;
 }
 
+//double average(const double* arr, int n) {
+//    if (n <= 0) return 0.0;
+//    double sum = 0.0;
+//    for(int i = 0; i < n; i++) {
+//         sum += arr[i];
+//    }
+//    double avg = sum / n;
+//    return avg;
+//}
 
 
 template <class Iter>
@@ -77,7 +87,8 @@ template <class Iter>
 double Math::var(Iter begin, Iter end) {
 	if (begin == end) { return 0.0; }
 	int n = 0;
-	double sum = 0.0, sqsum = 0.0;
+	double sum = 0.0;
+	double sqsum = 0.0;
 	for (Iter it = begin; it != end; ++it) {
 		sum += *it;
 		sqsum += (*it)*(*it);
@@ -89,19 +100,14 @@ double Math::var(Iter begin, Iter end) {
 	return var;
 }
 
+template <class Iter>
+double Math::std(Iter begin, Iter end) {
+	return sqrt(var(begin, end));
+}
 
 }  //~ namespace ycg
 //const int OO = 2000000000;
 
-//double average(const double* arr, int n) {
-//    if (n <= 0) return 0.0;
-//    double sum = 0.0;
-//    for(int i = 0; i < n; i++) {
-//         sum += arr[i];
-//    }
-//    double avg = sum / n;
-//    return avg;
-//}
 //inline double angleToRadian(double angle) { return angle * PI / 180.0; }
 
 //}  // namespace math

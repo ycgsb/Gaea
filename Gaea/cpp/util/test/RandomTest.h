@@ -9,10 +9,12 @@ class RandomTest : public Test {
 public:
 	void run();
 private:
-	void testUniform();
+	void testUniformInt();
+	void testUniformDouble();
+	void testGaussStandard();
 	void testGauss();
 private:
-	static const int BIG_NUM = 10000000;
+	static const int BIG = 10000000;
 };
 
 } //~ namespace ycg
