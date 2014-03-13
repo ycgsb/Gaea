@@ -11,8 +11,8 @@ namespace ycg {
 
 class DatasetClassification : public DatasetSupervised {
 public:
-	DatasetClassification() : DatasetSupervised() { }
-	DatasetClassification(const String& fileName) : DatasetSupervised(fileName) { }
+	DatasetClassification(int dims) : DatasetSupervised(dims) { }
+	DatasetClassification(const String& fileName) : DatasetSupervised(0) { load(fileName); }
 	virtual ~DatasetClassification() { }
 	virtual void clear();
 	int label(int i) const { return _labels[i]; }

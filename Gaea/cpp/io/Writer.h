@@ -34,7 +34,7 @@ private:
 class WriterStrategy {
 public:
 	WriterStrategy();
-	virtual ~WriterStrategy();
+	virtual ~WriterStrategy() = 0;
 	virtual void println() = 0;
 	virtual void print(int i) = 0;
 	virtual void println(int i) = 0;

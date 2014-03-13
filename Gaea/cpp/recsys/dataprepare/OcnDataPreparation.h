@@ -14,12 +14,11 @@ public:
 	void run();
 private:
 	void writeSessionDataAll();
-	void writeSessionDataOne(const String& inputName, const String& outputNameSession,
-			const String& outputNameAd);
+	void initMapping();
+	void writeSessionDataOne(const String& inputName, const String& outputNameSession);
 	void writeMacMappingData();
 	void writeAssetMapingData();
-	std::vector<std::string> generateDateNames();
-	std::string date2string(int year, int month, int day);
+	std::vector<String> readRawFilenames();
 	int getMacID(const String& mac);
 	int getAssetID(const String& asset);
 private:

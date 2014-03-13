@@ -1,6 +1,6 @@
 #include "Vector.h"
 #include "../io/Writer.h"
-#include <cmath>
+#include "../math/Math.h"
 
 namespace ycg {
 
@@ -26,34 +26,27 @@ Vector::Vector(int size, bool needInit, double initValue) :
     }
 }
 
-Vector::Vector(const Vector& orig) {
-    _size = orig._size;
-    _data = new double[_size];
+Vector::Vector(const Vector& orig) :
+	_size(orig._size),
+    _data(new double[_size]) {
     for (int i = 0; i < _size; ++i) {
         _data[i] = orig._data[i];
     }
 }
 
-Vector::Vector(Vector&& orig) {
-	_size = orig._size;
-	_data = orig._data;
+Vector::Vector(Vector&& orig) :
+	_size(orig._size),
+	_data(orig._data) {
 	orig._data = nullptr;
 }
 
 Vector::~Vector() {
-    freeData();
-}
-
-void Vector::freeData() {
 	delete []_data;
-    _data = nullptr;
 }
 
 Vector& Vector::operator = (const Vector& rhs) {
-    if (this == &rhs) {
-    	return *this;
-    }
-    freeData();
+    if (this == &rhs) return *this;
+    delete []_data;
     _size = rhs._size;
     _data = new double[_size];
     for (int i = 0; i < _size; ++i) {
@@ -63,50 +56,15 @@ Vector& Vector::operator = (const Vector& rhs) {
 }
 
 Vector& Vector::operator =  (Vector&& rhs) {
-	if (this == &rhs) {
-		return *this;
-	}
-	freeData();
+	if (this == &rhs) return *this;
+    delete []_data;
 	_size = rhs._size;
 	_data = rhs._data;
 	rhs._data = nullptr;
 	return *this;
 }
 
-//Vector Vector::operator + (const Vector& rhs) const {
-//    assert(this->size() == rhs.size());
-//    Vector result(rhs.elemNum);
-//    for (int i = 0; i < elemNum; ++i) {
-//        result.data[i] = this->data[i] + rhs.data[i];
-//    }
-//    return result;
-//}
-//
-//Vector& Vector::operator += (const Vector& rhs) {
-//    assert(this->size() == rhs.size());
-//    for (int i = 0; i < elemNum; ++i) {
-//        this->data[i] += rhs.data[i];
-//    }
-//    return *this;
-//}
-//
-//Vector Vector::operator -(const Vector& rhs) const {
-//    assert(this->size() == rhs.size());
-//    Vector result(rhs.elemNum);
-//    for (int i = 0; i < elemNum; ++i) {
-//        result.data[i] = this->data[i] - rhs.data[i];
-//    }
-//    return result;
-//}
-//
-//Vector& Vector::operator -= (const Vector& rhs) {
-//    assert(this->size() == rhs.size());
-//    for (int i = 0; i < elemNum; ++i) {
-//        this->data[i] -= rhs.data[i];
-//    }
-//    return *this;
-//}
-//
+
 //Vector Vector::operator * (double k) const {
 //    Vector result(elemNum);
 //    for (int i = 0; i < elemNum; ++i) {
@@ -142,6 +100,52 @@ double Vector::distanceL2(const Vector& lhs, const Vector& rhs) {
     return distance;
 }
 
+Vector& Vector::operator += (const Vector& rhs) {
+    assert(this->_size == rhs._size);
+    for (int i = 0; i < _size; ++i) {
+        _data[i] += rhs._data[i];
+    }
+    return *this;
+}
+
+Vector& Vector::operator -= (const Vector& rhs) {
+    assert(this->_size == rhs._size);
+    for (int i = 0; i < _size; ++i) {
+        _data[i] -= rhs._data[i];
+    }
+    return *this;
+}
+
+Vector operator + (const Vector& lhs, const Vector& rhs) {
+	assert(lhs._size == rhs._size);
+	Vector result(lhs._size, false);
+	for (int i = 0; i < lhs._size; ++i) {
+		result._data[i] = lhs._data[i] + rhs._data[i];
+	}
+	return result;
+}
+
+Vector operator - (const Vector& lhs, const Vector& rhs) {
+	assert(lhs._size == rhs._size);
+	Vector result(lhs._size, false);
+	for (int i = 0; i < lhs._size; ++i) {
+		result._data[i] = lhs._data[i] - rhs._data[i];
+	}
+	return result;
+}
+
+Vector operator * (double k, const Vector& rhs) {
+	Vector result(rhs._size, false);
+	for (int i = 0; i < rhs._size; ++i) {
+		result._data[i] = k * rhs._data[i];
+	}
+	return result;
+}
+
+Vector operator * (const Vector& lhs, double k) {
+	return k * lhs;
+}
+
 //double Vector::normL1(const Vector &vec) {
 //    double norm = 0.0;
 //    for (int i = 0; i < vec.elemNum; ++i) {
@@ -152,7 +156,7 @@ double Vector::distanceL2(const Vector& lhs, const Vector& rhs) {
 
 std::ostream& operator << (std::ostream& os, const Vector& vec) {
 	for (int i = 0; i < vec._size; ++i) {
-		if (i > 0) { os << " "; }
+		if (i > 0) { os << ","; }
 		os << vec._data[i];
 	}
 	return os;
@@ -166,4 +170,14 @@ void print(const Vector& vec) {
 	}
 }
 
+double normL2(const Vector& vec) {
+	double norm = 0.0;
+	for (int i = 0; i < vec.size(); ++i) {
+		norm += Math::sqr(vec[i]);
+	}
+	return Math::sqrt(norm);
+}
+
 } //~ namespace ycg
+
+

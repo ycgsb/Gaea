@@ -2,21 +2,12 @@
 #define CONCENTRICDATAGENERATOR_H
 
 #include "../../numerical/Vector.h"
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-
 namespace ycg {
 
 class ConcentricDataGenerator {
 public:
-	ConcentricDataGenerator();
-	virtual ~ConcentricDataGenerator();
 	void run();
 private:
-	void generateTrainFile(std::ostream& os);
-	void generateTestFile(std::ostream& os);
 	Vector generatePositiveSample();
 	Vector generateNegativeSample();
 private:

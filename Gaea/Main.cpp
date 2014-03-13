@@ -1,15 +1,14 @@
-//#include "cpp/recsys/RecSysLauncher.h"
 #include "cpp/recsys/dataprepare/OcnDataPreparation.h"
-#include "cpp/lang/test/StringTest.h"
+#include "cpp/ml/test/PolynomialRegressionTest.h"
+#include "cpp/ml/test/GradientDescentTest.h"
 #include <cstdio>
 
 int main(int argc, char **argv) {
 	try {
 //		ycg::RecSysLauncher().launch();
-//		ycg::SinusoidalDataGenerator().run();
-//		ycg::ConcentricDataGenerator().run();
-		ycg::OcnDataPreparation().run();
-//		ycg::StringTest().run();
+//		ycg::OcnDataPreparation().run();
+//		ycg::PolynomialRegressionTest().run();
+		ycg::GradientDescentTest().run();
 	} catch (...) {
 		printf("Error Occured\n");
 	}

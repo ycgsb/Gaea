@@ -18,47 +18,35 @@ void OcnDataPreparation::run() {
 }
 
 void OcnDataPreparation::writeSessionDataAll() {
-	auto datenames = generateDateNames();
-	macMap.clear();	macCount = 0;
-	assetMap.clear(); assetCount = 0;
-	for(std::string& date: datenames) {
-		String inputFilename = HOME_DIR + "\\Raw\\Session\\ow_rental_sitv." + date + ".txt";
-		String outputFilename1 = HOME_DIR + "\\session\\session" + date + ".txt";
-		String outputFilename2 = HOME_DIR + "\\session\\ad\\ad" + date + ".txt";
-		std::cout << "processing " << date << std::endl;
-		writeSessionDataOne(inputFilename, outputFilename1, outputFilename2);
+	auto rawFilenames = readRawFilenames();
+	initMapping();
+	for(String& inputFilename: rawFilenames) {
+		String outputFilename = HOME_DIR + "\\session\\session"
+				+ inputFilename.substring(inputFilename.indexOf('.') + 1);
+		std::cout << "generating..." << outputFilename << std::endl;
+		writeSessionDataOne(inputFilename, outputFilename);
 	}
 }
 
-std::vector<std::string> OcnDataPreparation::generateDateNames() {
-	static const int dayInMonth[12] = {31, 28, 31, 30, 31, 30,
-									   31, 31, 30, 31, 30, 31};
-	std::vector<std::string> datenames;
-	int year = 2013, month, day;
-	for (month = 1; month <= 12; ++month) {
-		for (day = 1; day <= dayInMonth[month-1]; ++day) {
-			datenames.push_back(date2string(year, month, day));
-		}
+std::vector<String> OcnDataPreparation::readRawFilenames() {
+	std::vector<String> filenames;
+	Scanner scanner(HOME_DIR + "\\raw\\session_filelist.txt");
+	while (scanner.hasNext()) {
+		filenames.push_back(scanner.nextLine());
 	}
-	year = 2014; month = 1;
-	for (day = 1; day <= 7; ++day) {
-		datenames.push_back(date2string(year, month, day));
-	}
-	return datenames;
+	return filenames;
 }
 
-std::string OcnDataPreparation::date2string(int year, int month, int day) {
-	std::ostringstream oss;
-	oss << year << std::setfill('0')
-		<< std::setw(2) << month
-		<< std::setw(2) << day;
-	return oss.str();
+void OcnDataPreparation::initMapping() {
+	macMap.clear();
+	macCount = 0;
+	assetMap.clear();
+	assetCount = 0;
 }
 
-void OcnDataPreparation::writeSessionDataOne(const String& inputName, const String& outputNameSession, const String& outputNameAd) {
+void OcnDataPreparation::writeSessionDataOne(const String& inputName, const String& outputName) {
 	Scanner scanner(inputName);
-	Writer writerSession(outputNameSession);
-	Writer writerAd(outputNameAd);
+	Writer writer(outputName);
 	while (scanner.hasNext()) {
 		String line = scanner.nextLine();
 		if (line.startsWith("SQL>")) continue;
@@ -67,15 +55,10 @@ void OcnDataPreparation::writeSessionDataOne(const String& inputName, const Stri
 		String& asset = fields[4];
 		String& start = fields[5];
 		String& end = fields[6];
-		if (asset.startsWith("AD")) {
-			writerAd.print(mac).print('|').print(asset)
-					.print('|').print(start).print('|')
-					.println(end);
-			continue;
-		}
+		if (asset.startsWith("AD")) continue;
 		int macID = getMacID(mac);
 		int assetID = getAssetID(asset);
-		writerSession.print(macID).print(' ').print(assetID)
+		writer.print(macID).print(' ').print(assetID)
 			.print(' ').print(start.trim().replace(' ', 'T'))
 			.print(' ').println(end.trim().replace(' ', 'T'));
 	}
@@ -107,7 +90,7 @@ void OcnDataPreparation::writeMacMappingData() {
 		macVec.push_back(std::make_pair(id, mac));
 	}
 	std::sort(macVec.begin(), macVec.end());
-	String filename = HOME_DIR + "\\user\\mac_id.txt";
+	String filename = HOME_DIR + "\\user\\user_id.txt";
 	Writer writer(filename);
 	writer.println((int)macVec.size());
 	for (const auto& p : macVec) {
@@ -123,7 +106,7 @@ void OcnDataPreparation::writeAssetMapingData() {
 		assetVec.push_back(std::make_pair(id, asset));
 	}
 	std::sort(assetVec.begin(), assetVec.end());
-	String filename = HOME_DIR + "\\video\\asset_id.txt";
+	String filename = HOME_DIR + "\\video\\video_id.txt";
 	Writer writer(filename);
 	writer.println((int)assetVec.size());
 	for (auto& p : assetVec) {

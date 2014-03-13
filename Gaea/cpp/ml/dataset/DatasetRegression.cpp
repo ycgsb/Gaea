@@ -4,12 +4,12 @@
 namespace ycg {
 
 void DatasetRegression::clear() {
-	_dims = 0;
 	_features.clear();
 	_values.clear();
 }
 
 void DatasetRegression::addSample(const Vector& feature, double value) {
+	assert(feature.size() == _dims);
 	_features.push_back(feature);
 	_values.push_back(value);
 }

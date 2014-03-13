@@ -15,7 +15,7 @@ CrossValidatorClassification::~CrossValidatorClassification() { }
 void CrossValidatorClassification::validate() {
 	assert(parameter->testingDataRatio > 0.0 && parameter->testingDataRatio < 1.0);
 	int boundary = static_cast<int>(dataset->samples()*parameter->testingDataRatio);
-	DatasetClassification trainingData;
+	DatasetClassification trainingData(dataset->dims());
 	for (int i = boundary; i < dataset->samples(); ++i) {
 		trainingData.addSample(dataset->feature(i), dataset->label(i));
 	}

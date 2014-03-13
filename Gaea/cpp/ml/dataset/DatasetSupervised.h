@@ -9,11 +9,10 @@ namespace ycg {
 
 class DatasetSupervised {
 public:
-	DatasetSupervised() : _dims(0) {}
-	DatasetSupervised(const String& filename) : _dims(0) { load(filename); }
+	DatasetSupervised(int dims) : _dims(dims) { }
 	virtual ~DatasetSupervised() { }
-	virtual void load(const String& filename);
-	virtual void save(const String& filename);
+	void load(const String& filename);
+	void save(const String& filename);
 	virtual void clear() = 0;
 	int samples() const { return _features.size(); }
 	int dims() const { return _dims; }

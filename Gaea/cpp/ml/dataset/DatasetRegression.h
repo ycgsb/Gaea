@@ -7,11 +7,11 @@ namespace ycg {
 
 class DatasetRegression : public DatasetSupervised {
 public:
-	DatasetRegression() : DatasetSupervised() { }
-	DatasetRegression(const String& filename) : DatasetSupervised(filename) { }
+	DatasetRegression(int dims) : DatasetSupervised(dims) { }
+	DatasetRegression(const String& filename) : DatasetSupervised(0) { load(filename); }
 	virtual ~DatasetRegression() { }
 	virtual void clear();
-	int value(int i) const { return _values[i]; }
+	double value(int i) const { return _values[i]; }
 	void addSample(const Vector& feature, double value);
 protected:
 	virtual void processTarget(const String& item);
