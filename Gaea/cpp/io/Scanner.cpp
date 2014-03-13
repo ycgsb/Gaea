@@ -1,5 +1,6 @@
 #include "Scanner.h"
 #include "../lang/Character.h"
+#include <exception>
 
 namespace ycg {
 
@@ -56,8 +57,7 @@ ScannerStrategy::~ScannerStrategy() { }
 char ScannerFile::Buffer[ScannerFile::BUFFER_SIZE];
 
 ScannerFile::ScannerFile() :
-	fp(nullptr) {
-}
+	fp(nullptr) { }
 
 ScannerFile::ScannerFile(const char* fileName) {
 	fp = fopen(fileName, "r");
@@ -107,7 +107,12 @@ String ScannerFile::nextLine() {
 	while (len < BUFFER_SIZE && (ch = getc(fp)) != EOF && ch != '\n') {
 		Buffer[len++] = ch;
 	}
-	return String(Buffer, len);
+	String line(Buffer, len);
+	if (ch == '\n' || ch == EOF) {
+		return line;
+	} else {
+		throw std::exception();
+	}
 }
 
 void ScannerFile::skip(char ch) {

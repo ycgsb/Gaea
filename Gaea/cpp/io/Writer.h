@@ -12,7 +12,8 @@ class WriterStrategy;
 class Writer {
 public:
     Writer();
-    Writer(const char* fileName);
+    Writer(const char* filename);
+    Writer(const String& filename);
     virtual ~Writer();
     Writer& println();
     Writer& print(int i);

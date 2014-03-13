@@ -10,10 +10,6 @@ const int SinusoidalDataGenerator::TRAIN_SAMPLE_NUM = 10;
 const int SinusoidalDataGenerator::TEST_SAMPLE_NUM = 100;
 const double SinusoidalDataGenerator::NOISE_STD = 0.05;
 
-SinusoidalDataGenerator::SinusoidalDataGenerator() {}
-
-SinusoidalDataGenerator::~SinusoidalDataGenerator() {}
-
 void SinusoidalDataGenerator::run() {
 	std::ofstream foutTrain(HOME_DIR + "\\sin_train.txt");
 	std::ofstream foutTest(HOME_DIR + "\\sin_test.txt");
@@ -30,7 +26,7 @@ void SinusoidalDataGenerator::generateTrainFile(std::ostream& os) {
 	for (int i = 0; i < TRAIN_SAMPLE_NUM; ++i) {
 		double x = 1.0 / (TRAIN_SAMPLE_NUM - 1)*i;
 		double y = sinFun(x) + rnd.gauss(0.0, NOISE_STD);
-		os << x << " " << y << std::endl;
+		os << x << "," << y << std::endl;
 	}
 }
 
@@ -39,7 +35,7 @@ void SinusoidalDataGenerator::generateTestFile(std::ostream& os) {
 	for (int i = 0; i < TEST_SAMPLE_NUM; ++i) {
 		double x = rnd.uniform(0.0, 1.0);
 		double y = sinFun(x);
-		os << x << " " << y << std::endl;
+		os << x << "," << y << std::endl;
 	}
 }
 

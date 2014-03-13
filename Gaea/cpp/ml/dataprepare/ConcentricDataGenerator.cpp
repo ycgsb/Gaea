@@ -28,12 +28,12 @@ void ConcentricDataGenerator::generateTrainFile(std::ostream& os) {
 	std::generate(posSamples.begin(), posSamples.end(),
 			[this](){ return this->generatePositiveSample(); });
 	std::for_each(posSamples.begin(), posSamples.end(),
-			[&os](const Vector& sample){ os << sample << " " << 1 << std::endl; });
+			[&os](const Vector& sample){ os << sample << "," << 1 << std::endl; });
 	std::vector<Vector> negSamples(SAMPLE_NUM);
 	std::generate(negSamples.begin(), negSamples.end(),
 			[this](){ return this->generateNegativeSample(); });
 	std::for_each(negSamples.begin(), negSamples.end(),
-			[&os](const Vector& sample){ os << sample << " " << 0 << std::endl; });
+			[&os](const Vector& sample){ os << sample << "," << 0 << std::endl; });
 }
 
 void ConcentricDataGenerator::generateTestFile(std::ostream& os) {

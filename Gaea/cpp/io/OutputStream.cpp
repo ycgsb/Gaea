@@ -3,8 +3,7 @@
 namespace ycg {
 
 OutputStream::OutputStream() :
-		fp(stdout) {
-}
+		fp(stdout) { }
 
 OutputStream::OutputStream(const char* fileName, const char* mode) {
 	fp = fopen(fileName, mode);

@@ -1,21 +1,17 @@
-/*
- * DatasetUnsupervised.h
- *
- *  Created on: 2013年12月2日
- *      Author: ChenguangYu
- */
+#ifndef DATASETUNSUPERVISED_H
+#define DATASETUNSUPERVISED_H
 
-#ifndef DATASETUNSUPERVISED_H_
-#define DATASETUNSUPERVISED_H_
+#include "../../lang/String.h"
 
 namespace ycg {
 
 class DatasetUnsupervised {
 public:
-	DatasetUnsupervised();
+	DatasetUnsupervised() { }
+	DatasetUnsupervised(const String& filename) { }
 	virtual ~DatasetUnsupervised();
 };
 
-} /* namespace ycg */
+} //~ namespace ycg
 
-#endif /* DATASETUNSUPERVISED_H_ */
+#endif /* DATASETUNSUPERVISED_H */

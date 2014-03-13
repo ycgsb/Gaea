@@ -1,6 +1,7 @@
-#ifndef OCNDATAPREPARATION_H_
-#define OCNDATAPREPARATION_H_
+#ifndef OCNDATAPREPARATION_H
+#define OCNDATAPREPARATION_H
 
+#include "../../lang/String.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,22 +13,23 @@ class OcnDataPreparation {
 public:
 	void run();
 private:
-	void formatSessionData();
-	void formatSessionData(std::istream& is, std::ostream& os);
-	void generateMacMappingData();
-	void generateAssetMapingData();
+	void writeSessionDataAll();
+	void writeSessionDataOne(const String& inputName, const String& outputNameSession,
+			const String& outputNameAd);
+	void writeMacMappingData();
+	void writeAssetMapingData();
 	std::vector<std::string> generateDateNames();
-	std::string makeDateString(int year, int month, int day);
-	std::vector<std::string> extractFields(const std::string& line);
-	std::string trimString(std::string& str);
+	std::string date2string(int year, int month, int day);
+	int getMacID(const String& mac);
+	int getAssetID(const String& asset);
 private:
-	static const std::string HOME_DIR;
-	std::map<std::string, int> macMap;
+	static const String HOME_DIR;
+	std::map<String, int> macMap;
 	int macCount;
-	std::map<std::string, int> assetMap;
+	std::map<String, int> assetMap;
 	int assetCount;
 };
 
 } //~ namespace ycg
 
-#endif /* OCNDATAPREPARATION_H_ */
+#endif /* OCNDATAPREPARATION_H */

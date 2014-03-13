@@ -6,8 +6,12 @@ Writer::Writer() {
 	strategy = new WriterConsole();
 }
 
-Writer::Writer(const char* fileName) {
-	strategy = new WriterFile(fileName);
+Writer::Writer(const char* filename) {
+	strategy = new WriterFile(filename);
+}
+
+Writer::Writer(const String& filename) {
+	strategy = new WriterFile(filename.toChars());
 }
 
 Writer::~Writer() {

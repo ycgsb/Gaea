@@ -15,7 +15,7 @@ KNN::~KNN() {
 }
 
 void KNN::train(const DatasetClassification *trainingData) {
-    assert(trainingData->size() >= numNeighbor);
+    assert(trainingData->samples() >= numNeighbor);
     this->trainingData = trainingData;
 }
 
@@ -29,10 +29,10 @@ int KNN::predict(const Vector &feature) {
 void KNN::selectNearestNeighbor(const Vector &feature) {
     neighbors->clear();
     for (int i = 0; i < numNeighbor; ++i) {
-        neighbors->add(Pair<double, int>(Vector::distanceL2(feature, trainingData->getFeature(i)), i));
+        neighbors->add(Pair<double, int>(Vector::distanceL2(feature, trainingData->feature(i)), i));
     }
-    for (int i = 0; i < trainingData->size(); ++i) {
-    	Pair<double, int> rec(Vector::distanceL2(feature, trainingData->getFeature(i)), i);
+    for (int i = 0; i < trainingData->samples(); ++i) {
+    	Pair<double, int> rec(Vector::distanceL2(feature, trainingData->feature(i)), i);
         if (rec < neighbors->max()) {
             neighbors->modify(0, rec);
         }
@@ -42,7 +42,7 @@ void KNN::selectNearestNeighbor(const Vector &feature) {
 int KNN::voteBetweenNearestNeighbor() {
 	int i = 0;
     for(Pair<double, int>* iter = neighbors->begin(); iter != neighbors->end(); ++iter) {
-        votes[i++] = trainingData->getLabel(iter->second());
+        votes[i++] = trainingData->label(iter->second());
     }
     QuickSorter sort;
     sort(votes, numNeighbor);

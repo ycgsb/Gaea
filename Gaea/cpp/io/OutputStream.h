@@ -27,6 +27,12 @@ protected:
 	FILE* fp;
 };
 
+OutputStream& operator << (OutputStream& os, int32 i);
+OutputStream& operator << (OutputStream& os, uint32 i);
+OutputStream& operator << (OutputStream& os, double d);
+OutputStream& operator << (OutputStream& os, char ch);
+OutputStream& operator << (OutputStream& os, const char* str);
+
 } //~ namespace ycg
 
 #endif /* OUTPUTSTREAM_H */

@@ -9,8 +9,6 @@ namespace ycg {
 
 class SinusoidalDataGenerator {
 public:
-	SinusoidalDataGenerator();
-	virtual ~SinusoidalDataGenerator();
 	void run();
 private:
 	void generateTrainFile(std::ostream& os);

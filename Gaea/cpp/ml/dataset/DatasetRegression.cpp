@@ -1,21 +1,21 @@
-/*
- * DatasetRegression.cpp
- *
- *  Created on: 2013年11月17日
- *      Author: ChenguangYu
- */
-
 #include "DatasetRegression.h"
+#include "../../lang/Double.h"
 
 namespace ycg {
 
-DatasetRegression::DatasetRegression() {
-	// TODO Auto-generated constructor stub
-
+void DatasetRegression::clear() {
+	_dims = 0;
+	_features.clear();
+	_values.clear();
 }
 
-DatasetRegression::~DatasetRegression() {
-	// TODO Auto-generated destructor stub
+void DatasetRegression::addSample(const Vector& feature, double value) {
+	_features.push_back(feature);
+	_values.push_back(value);
 }
 
-} /* namespace ycg */
+void DatasetRegression::processTarget(const String& item) {
+	_values.push_back(Double::parseDouble(item));
+}
+
+} //~ namespace ycg
