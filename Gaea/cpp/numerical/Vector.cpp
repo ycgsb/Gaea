@@ -64,6 +64,14 @@ Vector& Vector::operator =  (Vector&& rhs) {
 	return *this;
 }
 
+double Vector::dotProd(const Vector& rhs) const {
+	assert(this->_size == rhs._size);
+	double sum = 0.0;
+	for (int i = 0; i < rhs._size; ++i) {
+		sum += _data[i] * rhs._data[i];
+	}
+	return sum;
+}
 
 //Vector Vector::operator * (double k) const {
 //    Vector result(elemNum);
@@ -80,15 +88,6 @@ Vector& Vector::operator =  (Vector&& rhs) {
 //    return *this;
 //}
 //
-//double Vector::dotProduct(const Vector& lhs, const Vector& rhs) {
-//    assert(lhs.size() == rhs.size());
-//    double result = 0.0;
-//    for (int i = 0; i < lhs.elemNum; ++i) {
-//        result += lhs.data[i] * rhs.data[i];
-//    }
-//    return result;
-//}
-
 double Vector::distanceL2(const Vector& lhs, const Vector& rhs) {
     assert(lhs.size() == rhs.size());
     double sum = 0.0;
@@ -172,8 +171,8 @@ void print(const Vector& vec) {
 
 double normL2(const Vector& vec) {
 	double norm = 0.0;
-	for (int i = 0; i < vec.size(); ++i) {
-		norm += Math::sqr(vec[i]);
+	for (int i = 0; i < vec._size; ++i) {
+		norm += Math::sqr(vec._data[i]);
 	}
 	return Math::sqrt(norm);
 }

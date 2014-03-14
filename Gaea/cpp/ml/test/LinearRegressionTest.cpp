@@ -5,8 +5,8 @@ namespace ycg {
 
 void LinearRegressionTest::run() {
 	DatasetRegression dataset(3);
-	LinearRegressionConfig config;
-	LinearRegression lr(dataset, config);
+//	LinearRegressionConfig config;
+	LinearRegression lr(dataset);
 	lr.train();
 	lr.getW();
 }

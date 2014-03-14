@@ -18,6 +18,7 @@ public:
 	Vector& operator = (const Vector& rhs);
 	Vector& operator = (Vector&& rhs);
 	int size() const { return _size; };
+	double dotProd(const Vector& rhs) const;
 	double& operator [] (int index) { return _data[index]; }
     const double& operator [] (int index) const { return _data[index]; }
     double& operator () (int index) { return _data[index]; }
@@ -29,8 +30,8 @@ public:
     friend Vector operator * (double k, const Vector& rhs);
     friend Vector operator * (const Vector& lhs, double k);
     friend std::ostream& operator << (std::ostream& os, const Vector& vec);
-
-
+    friend double dotProd(const Vector& lhs, const Vector& rhs);
+    friend double normL2(const Vector& vec);
 //
 //    Vector operator + (const Vector& rhs) const;
 
@@ -55,6 +56,7 @@ Vector operator - (const Vector& lhs, const Vector& rhs);
 Vector operator * (double k, const Vector& rhs);
 Vector operator * (const Vector& lhs, double k);
 std::ostream& operator << (std::ostream& os, const Vector& vec);
+inline double dotProd(const Vector& lhs, const Vector& rhs) { return lhs.dotProd(rhs); }
 double normL2(const Vector& vec);
 
 } //~ namespace ycg

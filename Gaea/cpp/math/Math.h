@@ -18,9 +18,10 @@ namespace Math {
     template <class T> static const T& min(const T* array, int n);
     static int abs(int x);
     static double abs(double x);
-    template <class T> static T sqr(T x) { return x*x; }
-    static double sqrt(double x) { return ::sqrt(x); }
-    static int sum(const int *a, int length);
+    inline int sqr(int x) { return x * x; }
+    inline double sqr(double x) { return x * x; }
+    inline double sqrt(double x) { return ::sqrt(x); }
+    int sum(const int *a, int length);
     static int power(int x, int p);
 
     inline double sin(double x) { return ::sin(x); }
