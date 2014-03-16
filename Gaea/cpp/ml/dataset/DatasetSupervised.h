@@ -2,6 +2,7 @@
 #define DATASETSUPERVISED_H
 
 #include "../../lang/String.h"
+#include "../../io/Writer.h"
 #include "../../numerical/Vector.h"
 #include "../../numerical/Matrix.h"
 #include <vector>
@@ -18,9 +19,10 @@ public:
 	int samples() const { return _features.size(); }
 	int dims() const { return _dims; }
 	const Vector& feature(int i) const { return _features[i]; }
-
+	Matrix getDesignMatrix() const;
 protected:
-	virtual void processTarget(const String& item) = 0;
+	virtual void readTarget(const String& item) = 0;
+	virtual void writeTarget(int i, Writer& writer) = 0;
 protected:
 	int _dims;
 	std::vector<Vector> _features;

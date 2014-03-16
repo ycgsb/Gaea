@@ -5,11 +5,9 @@
 namespace ycg {
 
 PolynomialRegressionConfig::PolynomialRegressionConfig(int order,
-		bool regNeeded, double regCoeff, OptimizeMethod method) {
+		LinearRegressionConfig configLR) {
 	this->order = order;
-	this->regNeeded = regNeeded;
-	this->regCoeff = regCoeff;
-	this->method = method;
+	this->configLR = configLR;
 }
 
 PolynomialRegression::PolynomialRegression(const PolynomialRegressionConfig& config,
@@ -34,8 +32,7 @@ void PolynomialRegression::train() {
 		}
 		datasetLR.addSample(feature, y);
 	}
-	LinearRegressionConfig configLR(_config.regNeeded, _config.regCoeff, _config.method);
-	LinearRegression LR(configLR, datasetLR);
+	LinearRegression LR(_config.configLR, datasetLR);
 	LR.train();
 	_coeff = LR.getSolution();
 }

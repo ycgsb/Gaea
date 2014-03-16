@@ -2,6 +2,7 @@
 #define DATASETREGRESSION_H
 
 #include "DatasetSupervised.h"
+#include "../../io/Writer.h"
 
 namespace ycg {
 
@@ -13,8 +14,10 @@ public:
 	virtual void clear();
 	double value(int i) const { return _values[i]; }
 	void addSample(const Vector& feature, double value);
+	Vector getTargetVector();
 protected:
-	virtual void processTarget(const String& item);
+	virtual void readTarget(const String& item);
+	virtual void writeTarget(int i, Writer& writer);
 protected:
 	std::vector<double> _values;
 };

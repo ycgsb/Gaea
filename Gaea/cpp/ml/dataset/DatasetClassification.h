@@ -18,7 +18,8 @@ public:
 	int label(int i) const { return _labels[i]; }
     void addSample(const Vector& feature, int label);
 protected:
-	virtual void processTarget(const String& item);
+	virtual void readTarget(const String& item);
+	virtual void writeTarget(int i, Writer& writer);
 protected:
     std::vector<int> _labels;
 };

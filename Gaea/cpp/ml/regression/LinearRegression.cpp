@@ -16,15 +16,29 @@ LinearRegression::LinearRegression(const LinearRegressionConfig& config,
 	_dataset(dataset) { }
 
 
-void ycg::LinearRegression::train() {
-	if (_config.method == LinearRegressionConfig::CLOSED_FORM) {
-		Matrix X = _dataset.getDesignMatrix();
-		Vector Y = _dataset.getTargetVector();
-		inv(X.T()*X)*X.T()*t;
+void LinearRegression::train() {
+	switch (_config.method) {
+		case LinearRegressionConfig::CLOSED_FORM:
+			computeSolutionByCloseForm();
+			break;
+		case LinearRegressionConfig::GRADIENT_DESCENT:
+			computeSolutionByGradientDescent();
+		default:
+			break;
 	}
 }
 
-Vector ycg::LinearRegression::getSolution() const {
+void ycg::LinearRegression::computeSolutionByCloseForm() {
+	Matrix X = _dataset.getDesignMatrix();
+	Vector Y = _dataset.getTargetVector();
+	inv(X.T()*X)*X.T()*t;
+
+}
+
+void ycg::LinearRegression::computeSolutionByGradientDescent() {
+}
+
+Vector LinearRegression::getSolution() const {
 	return _coeff;
 }
 

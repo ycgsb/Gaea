@@ -27,11 +27,12 @@ public:
 	Vector getSolution() const;
 	double predict(const Vector& feature);
 private:
+	void computeSolutionByCloseForm();
+	void computeSolutionByGradientDescent();
 	double computeDataError(const Vector& coeff);
 private:
 	const LinearRegressionConfig& _config;
 	const DatasetRegression& _dataset;
-
 	Vector _coeff;
 };
 

@@ -16,8 +16,12 @@ void DatasetClassification::addSample(const Vector& feature, int label) {
 	_labels.push_back(label);
 }
 
-void DatasetClassification::processTarget(const String& item) {
+void DatasetClassification::readTarget(const String& item) {
 	_labels.push_back(Integer::parseInt(item));
+}
+
+void DatasetClassification::writeTarget(int i, Writer& writer) {
+	writer.print(_labels[i]);
 }
 
 } //~ namespace ycg

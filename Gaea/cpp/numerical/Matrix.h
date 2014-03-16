@@ -223,7 +223,7 @@ inline bool Matrix::isSquare() const {
 //        }
 //        return os;
 //    }
-//    Matrix & operator *= (Matrix M) //闂佽法鍠撳▓鏇犵驳鐟欏嫬顏�
+//    Matrix & operator *= (Matrix M)
 //    {
 //        Matrix Res(row,M.col);
 //        for(int i = 0 ; i < row ; i++)

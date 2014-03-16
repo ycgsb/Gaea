@@ -1,23 +1,16 @@
 #ifndef POLYNOMIALREGRESSION_H
 #define POLYNOMIALREGRESSION_H
 
-#include "../dataset/DatasetRegression.h"
-#include "../../numerical/Vector.h"
+#include "LinearRegression.h"
 
 namespace ycg {
 
 class PolynomialRegressionConfig {
 public:
-	enum OptimizeMethod {
-		CLOSED_FORM, GRADIENT_DESCENT
-	};
-	PolynomialRegressionConfig(int order, bool regNeeded = false,
-			double regCoeff = 0.0, OptimizeMethod method = CLOSED_FORM);
+	PolynomialRegressionConfig(int order, LinearRegressionConfig configLR);
 public:
 	int order;
-	bool regNeeded;
-	double regCoeff;
-	OptimizeMethod method;
+	LinearRegressionConfig configLR;
 };
 
 class PolynomialRegression {
