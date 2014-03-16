@@ -9,13 +9,10 @@ namespace ycg {
 class LinearRegressionConfig {
 public:
 	enum OptimizeMethod {
-		METHOD_CLOSED_FORM, METHOD_GRADIENT_DESCENT
+		CLOSED_FORM, GRADIENT_DESCENT
 	};
-	LinearRegressionConfig(bool regNeeded, double regCoeff, OptimizeMethod method) {
-		this->regNeeded = regNeeded;
-		this->regCoeff = regCoeff;
-		this->method = method;
-	}
+	LinearRegressionConfig(bool regNeeded = false, double regCoeff = 0.0,
+			OptimizeMethod method = CLOSED_FORM);
 public:
 	bool regNeeded;
 	double regCoeff;
@@ -24,17 +21,14 @@ public:
 
 class LinearRegression {
 public:
-	LinearRegression(const DatasetRegression& dataset);
-	LinearRegression(const DatasetRegression& dataset, const LinearRegressionConfig& config) :
-		_dataset(dataset), _config(config) { }
+	LinearRegression(const LinearRegressionConfig& config, const DatasetRegression& dataset);
 	virtual ~LinearRegression() {}
 	void train();
-	Vector getW() const;
+	Vector getSolution() const;
 	double predict(const Vector& feature);
 private:
 	double computeDataError(const Vector& coeff);
 private:
-	static const LinearRegressionConfig _defaultConfig;
 	const LinearRegressionConfig& _config;
 	const DatasetRegression& _dataset;
 

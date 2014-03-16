@@ -11,13 +11,8 @@ public:
 	enum OptimizeMethod {
 		CLOSED_FORM, GRADIENT_DESCENT
 	};
-	PolynomialRegressionConfig() : order(0), regNeeded(false), regCoeff(0.0), method(CLOSED_FORM) { }
-	PolynomialRegressionConfig(int order, bool regNeeded, double regCoeff, OptimizeMethod method) {
-		this->order = order;
-		this->regNeeded = regNeeded;
-		this->regCoeff = regCoeff;
-		this->method = method;
-	}
+	PolynomialRegressionConfig(int order, bool regNeeded = false,
+			double regCoeff = 0.0, OptimizeMethod method = CLOSED_FORM);
 public:
 	int order;
 	bool regNeeded;
@@ -27,19 +22,17 @@ public:
 
 class PolynomialRegression {
 public:
-	PolynomialRegression(const DatasetRegression& dataset);
-	PolynomialRegression(const DatasetRegression& dataset, const PolynomialRegressionConfig& config);
+	PolynomialRegression(const PolynomialRegressionConfig& config, const DatasetRegression& dataset);
 	virtual ~PolynomialRegression();
 	void train();
-	Vector getCoefficient() const;
-	double predict();
+	Vector getSolution() const;
+	double predict(double x);
 private:
 	DatasetRegression generateLinearRegressionDataset();
 private:
-	static const PolynomialRegressionConfig defaultConfig;
 	const PolynomialRegressionConfig& _config;
 	const DatasetRegression& _dataset;
-	Vector _w;
+	Vector _coeff;
 };
 
 } //~ namespace ycg

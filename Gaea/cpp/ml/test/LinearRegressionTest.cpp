@@ -8,7 +8,7 @@ void LinearRegressionTest::run() {
 //	LinearRegressionConfig config;
 	LinearRegression lr(dataset);
 	lr.train();
-	lr.getW();
+	lr.getSolution();
 }
 
 } //~ namespace ycg

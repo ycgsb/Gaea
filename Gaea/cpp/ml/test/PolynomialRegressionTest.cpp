@@ -8,10 +8,10 @@ namespace ycg {
 
 void PolynomialRegressionTest::run() {
 	DatasetRegression dataset("E:\\Dataset\\sin_train.txt");
-	PolynomialRegressionConfig config;
-	PolynomialRegression regression(dataset);
+	PolynomialRegressionConfig config(3);
+	PolynomialRegression regression(config, dataset);
 	regression.train();
-	std::cout << "best coeff:" << regression.getCoefficient() << std::endl;
+	std::cout << "best coeff:" << regression.getSolution() << std::endl;
 }
 
 } //~ namespace ycg

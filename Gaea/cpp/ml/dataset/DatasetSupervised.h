@@ -3,6 +3,7 @@
 
 #include "../../lang/String.h"
 #include "../../numerical/Vector.h"
+#include "../../numerical/Matrix.h"
 #include <vector>
 
 namespace ycg {
@@ -17,6 +18,7 @@ public:
 	int samples() const { return _features.size(); }
 	int dims() const { return _dims; }
 	const Vector& feature(int i) const { return _features[i]; }
+
 protected:
 	virtual void processTarget(const String& item) = 0;
 protected:

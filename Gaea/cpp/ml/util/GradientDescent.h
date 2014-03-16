@@ -9,16 +9,11 @@ namespace ycg {
 class GradientDescentConfig {
 public:
 	GradientDescentConfig(double learningRate, int maxIteration = 10000000,
-			double changeEps = 1e-14, bool showProcess = false) {
-		this->learningRate = learningRate;
-		this->maxIteration = maxIteration;
-		this->changeEps = changeEps;
-		this->showProcess = showProcess;
-	}
+			double convergeEps = 1e-14, bool showProcess = false);
 public:
 	double learningRate;
 	int maxIteration;
-	double changeEps;
+	double convergeEps;
 	bool showProcess;
 };
 
@@ -47,7 +42,7 @@ Vector GradientDescent::compute(const Vector& init, Func function, Grad gradient
 		}
 		Vector delta = _config.learningRate * gradient(var);
 		var -= delta;
-		if (countIter > _config.maxIteration || normL2(delta) < _config.changeEps) {
+		if (countIter > _config.maxIteration || normL2(delta) < _config.convergeEps) {
 			break;
 		}
 	}

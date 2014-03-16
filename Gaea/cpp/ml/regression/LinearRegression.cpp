@@ -3,17 +3,28 @@
 
 namespace ycg {
 
-const LinearRegressionConfig LinearRegression::_defaultConfig(false, 0.0, LinearRegressionConfig::METHOD_CLOSED_FORM);
-
-LinearRegression::LinearRegression(const DatasetRegression& dataset) :
-	_dataset(dataset),
-	_config(_defaultConfig) { }
-
-void ycg::LinearRegression::train() {
-
+LinearRegressionConfig::LinearRegressionConfig(bool regNeeded,
+		double regCoeff, OptimizeMethod method) {
+	this->regNeeded = regNeeded;
+	this->regCoeff = regCoeff;
+	this->method = method;
 }
 
-Vector ycg::LinearRegression::getW() const {
+LinearRegression::LinearRegression(const LinearRegressionConfig& config,
+		const DatasetRegression& dataset) :
+	_config(config),
+	_dataset(dataset) { }
+
+
+void ycg::LinearRegression::train() {
+	if (_config.method == LinearRegressionConfig::CLOSED_FORM) {
+		Matrix X = _dataset.getDesignMatrix();
+		Vector Y = _dataset.getTargetVector();
+		inv(X.T()*X)*X.T()*t;
+	}
+}
+
+Vector ycg::LinearRegression::getSolution() const {
 	return _coeff;
 }
 
@@ -33,4 +44,4 @@ double LinearRegression::computeDataError(const Vector& coeff) {
 	return error;
 }
 
-} /* namespace ycg */
+} //~ namespace ycg
