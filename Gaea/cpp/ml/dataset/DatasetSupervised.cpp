@@ -1,6 +1,7 @@
 #include "DatasetSupervised.h"
 #include "../../io/Scanner.h"
 #include "../../lang/Double.h"
+#include <iostream>
 
 namespace ycg {
 
@@ -34,8 +35,15 @@ void DatasetSupervised::save(const String& filename) {
 }
 
 Matrix ycg::DatasetSupervised::getDesignMatrix() const {
-	Matrix D;
-	return D;
+	int n = _features.size();
+	int m = _dims;
+	Matrix X(n, m, false);
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			X[i][j] = _features[i][j];
+		}
+	}
+	return X;
 }
 
 } //~ namespace ycg

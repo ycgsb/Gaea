@@ -9,7 +9,7 @@ namespace ycg {
 class GradientDescentConfig {
 public:
 	GradientDescentConfig(double learningRate, int maxIteration = 10000000,
-			double convergeEps = 1e-14, bool showProcess = false);
+			double convergeEps = 1e-12, bool showProcess = false);
 public:
 	double learningRate;
 	int maxIteration;
@@ -42,12 +42,12 @@ Vector GradientDescent::compute(const Vector& init, Func function, Grad gradient
 		}
 		Vector delta = _config.learningRate * gradient(var);
 		var -= delta;
-		if (countIter > _config.maxIteration || normL2(delta) < _config.convergeEps) {
+		if (countIter >= _config.maxIteration || normL2(delta) < _config.convergeEps) {
 			break;
 		}
 	}
 	if (_config.showProcess) {
-		if (countIter <= _config.maxIteration) {
+		if (countIter < _config.maxIteration) {
 			std::cout << "gradient descent converges at " << countIter << "iteration.\n";
 		} else {
 			std::cout << "max iteration exceeded, gradient descent not converges.\n";

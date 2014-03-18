@@ -1,4 +1,6 @@
 #include "LinearRegression.h"
+#include "../util/GradientDescent.h"
+#include "../../numerical/Exception.h"
 #include "../../math/Math.h"
 
 namespace ycg {
@@ -23,19 +25,55 @@ void LinearRegression::train() {
 			break;
 		case LinearRegressionConfig::GRADIENT_DESCENT:
 			computeSolutionByGradientDescent();
-		default:
 			break;
+		default:
+			throw UnsupportMethodException();
 	}
 }
 
-void ycg::LinearRegression::computeSolutionByCloseForm() {
+void LinearRegression::computeSolutionByCloseForm() {
 	Matrix X = _dataset.getDesignMatrix();
-	Vector Y = _dataset.getTargetVector();
-	inv(X.T()*X)*X.T()*t;
-
+	Vector t = _dataset.getTargetVector();
+	if (!_config.regNeeded) {
+		_coeff = (X.T()*X).inv()*X.T()*t;
+	} else {
+		double lambda = _config.regCoeff;
+		_coeff = (X.T()*X + lambda*Matrix::eye(X.rows()))
+				.inv()*X.T()*t;
+	}
 }
 
-void ycg::LinearRegression::computeSolutionByGradientDescent() {
+void LinearRegression::computeSolutionByGradientDescent() {
+	GradientDescentConfig config(0.05, 1000000, 0.00001, true);
+	GradientDescent gd(config);
+	Vector init(_dataset.dims(), 0.0);
+	Matrix X = _dataset.getDesignMatrix();
+	Vector t = _dataset.getTargetVector();
+	if (!_config.regNeeded) {
+		_coeff = gd.compute(init,
+			[&X, &t](const Vector& w) -> double {
+				double eng = normL2Sqr(t-X*w) / (2.0*X.rows());
+				return eng;
+			},
+			[&X, &t](const Vector& w) -> Vector{
+				Matrix residual(t-X*w);
+				Vector grad = -residual.T()*X;
+				return grad;
+			});
+	} else {
+		double lambda = _config.regCoeff;
+		_coeff = gd.compute(init,
+			[=, &X, &t](const Vector& w) -> double {
+				double eng = normL2Sqr(t-X*w) / (2.0*X.rows())
+						+ lambda / 2.0 *normL2Sqr(w);
+				return eng;
+			},
+			[=, &X, &t](const Vector& w) -> Vector {
+				Matrix residual(t-X*w);
+				Vector grad = -residual.T()*X + lambda*w;
+				return grad;
+			});
+	}
 }
 
 Vector LinearRegression::getSolution() const {

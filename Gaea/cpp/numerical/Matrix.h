@@ -2,7 +2,9 @@
 #define MATRIX_H
 
 #include "Common.h"
+#include "Vector.h"
 #include "../io/OutputStream.h"
+#include <iostream>
 #include <cassert>
 
 namespace ycg {
@@ -11,17 +13,29 @@ class Matrix {
 public:
 	Matrix();
 	Matrix(int rows, int cols, double initValue = 0.0);
-	Matrix(int rows, int cols, bool init, double initValue = 0.0);
-	Matrix(const Matrix& mat);
+	Matrix(int rows, int cols, bool needInit, double initValue = 0.0);
+	Matrix(const Matrix& orig);
+	Matrix(Matrix&& orig);
+	explicit Matrix(const Vector& orig);
+	explicit Matrix(Vector&& orig);
 	~Matrix();
-	int rows() const;
-	int cols() const;
-	double* operator [] (int i);
-	const double* operator [] (int i) const;
-	double& operator () (int i, int j);
-	const double& operator () (int i, int j) const;
-    Matrix& operator = (const Matrix& rhs);
-    const Matrix& operator + () const;
+	Matrix& operator = (const Matrix& orig);
+	Matrix& operator = (Matrix&& orig);
+	operator Vector () const;
+	int rows() const { return _rows; }
+	int cols() const { return _cols; }
+	double* operator [] (int i) { return _data + i*_cols; }
+	const double* operator [] (int i) const { return _data + i*_cols; }
+	double& operator () (int i, int j) { return _data[i*_cols + j]; }
+	const double& operator () (int i, int j) const { return _data[i*_cols + j];	}
+	bool isSquare() const { return _rows == _cols; }
+	bool isEmpty() const { return _size == 0; }
+	Matrix transpose() const;
+	Matrix T() const { return transpose(); }
+	Matrix inverse(int method = DECOMP_LU) const;
+	Matrix inv(int method = DECOMP_LU) const { return inverse(method); }
+
+	const Matrix& operator + () const;
     const Matrix  operator - () const;
     Matrix& operator += (const Matrix& rhs);
     Matrix& operator += (double rhs);
@@ -37,20 +51,19 @@ public:
     friend Matrix operator - (const Matrix& lhs, double rhs);
     friend Matrix operator - (double lhs, const Matrix& rhs);
     friend Matrix operator * (const Matrix& lhs, const Matrix& rhs);
+    friend Vector operator * (const Matrix& lhs, const Vector& rhs);
     friend Matrix operator * (const Matrix& lhs, double rhs);
     friend Matrix operator * (double lhs, const Matrix& rhs);
     friend Matrix operator / (const Matrix& lhs, double rhs);
     friend bool operator == (const Matrix& lhs, const Matrix& rhs);
     friend bool operator != (const Matrix& lhs, const Matrix& rhs);
 
-    bool isSquare() const;
+
 //    bool isNull() const;
 
-//    Matrix inv(int method = DECOMP_LU) const;
 ////===================================================
 //	Matrix dotProduct(const Matrix& rhs) const;
-//	Matrix transpose() const;
-//
+
 //	bool isSymmetric() const;
 //	double trace() const;
 
@@ -60,42 +73,15 @@ public:
     static Matrix eye(int n);
     static Matrix zeros(int rows, int cols);
     static Matrix ones(int rows, int cols);
-    static Matrix null();
-private:
-    void freeData();
 protected:
-	int rowNum;
-	int colNum;
-	double* data;
+	int _rows;
+	int _cols;
+	int _size;
+	double *_data;
 };
 
-inline int Matrix::rows() const {
-	return rowNum;
-}
-
-inline int Matrix::cols() const {
-	return colNum;
-}
-
-inline double* Matrix::operator [] (int i) {
-	return data + i*colNum;
-}
-
-inline const double* Matrix::operator [] (int i) const {
-	return data + i*colNum;
-}
-
-inline double& Matrix::operator () (int i, int j) {
-    return data[i*colNum + j];
-}
-
-inline const double& Matrix::operator () (int i, int j) const {
-	return data[i*colNum + j];
-}
-
-inline bool Matrix::isSquare() const {
-	return (rowNum == colNum);
-}
+Matrix operator * (const Matrix& lhs, const Matrix& rhs);
+Vector operator * (const Matrix& lhs, const Vector& rhs);
 
 //inline bool Matrix::isNull() const {
 //	return (rowNum == 0 && colNum == 0);
@@ -104,19 +90,6 @@ inline bool Matrix::isSquare() const {
 
 //    double DefA(void);		//get the row-colum equation of matrix
 //    double SubA(int, int);	//get the sub-row-colum equation of matrix
-
-////private copy and kill method
-//void Matrix::Copy(Matrix &s)
-//{
-//  RowMax = s.RowMax;
-//  ColMax = s.ColMax;
-//  ErrHandler = s.ErrHandler;
-//  if((Row=new DblArray* [RowMax]) == NULL)
-//    ErrSet(MT_MEM_ALLOC);
-//  for(int i=0; i<RowMax; i++)
-//    if((Row[i]=new DblArray(*s.Row[i])) == NULL)
-//      ErrSet(MT_MEM_ALLOC);
-//}
 
 //ostream& operator << (ostream &os, Matrix &s)
 //{
@@ -211,7 +184,7 @@ inline bool Matrix::isSquare() const {
 //		scanf("%d", &matrix.data[i]);
 //}
 
-//	friend inline istream & operator >> (istream & is,Matrix & M) //闂佽法鍠愰弸濠氬箯閻戣姤鏅搁柡鍌樺�鐎氬綊鏌ㄩ悢鍛婄伄闁归鍏橀弫鎾诲棘閵堝棗顏堕梺璺ㄥ枑閺嬪骞忛敓锟�/
+//	friend inline istream & operator >> (istream & is,Matrix & M)
 //    friend inline ostream & operator << (ostream & os,const Matrix & M)
 //    {
 //        for(int r = 0 ; r < M.row ; r++)
@@ -248,10 +221,6 @@ inline int size(const Matrix& mat, int dim) {
 	} else {
 		return 1;
 	}
-}
-
-inline bool isSquare(const Matrix& mat) {
-	return mat.rows() == mat.cols();
 }
 
 } //~ namespace ycg

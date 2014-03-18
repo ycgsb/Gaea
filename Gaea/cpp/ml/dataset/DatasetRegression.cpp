@@ -14,7 +14,7 @@ void DatasetRegression::addSample(const Vector& feature, double value) {
 	_values.push_back(value);
 }
 
-Vector DatasetRegression::getTargetVector() {
+Vector DatasetRegression::getTargetVector() const {
 	int n = _values.size();
 	Vector target(n);
 	for (int i = 0; i < n; ++i) {

@@ -12,7 +12,7 @@ void GradientDescentTest::run() {
 			return 3*Math::sqr(vec[0]-2)
 				  + 4*Math::sqr(vec[1]-3);
 		},
-		[](const Vector& vec) {
+		[](const Vector& vec) -> Vector{
 			Vector g(2);
 			g[0] = 6*(vec[0]-2);
 			g[1] = 8*(vec[1]-3);

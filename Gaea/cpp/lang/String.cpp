@@ -176,7 +176,7 @@ String String::trim() const {
 std::vector<String> String::split2vector(char ch) const {
 	std::vector<String> items;
 	int pos1 = 0, pos2 = 0;
-	while ((pos2 = indexOf('|', pos1)) != -1) {
+	while ((pos2 = indexOf(ch, pos1)) != -1) {
 		items.push_back(substring(pos1, pos2));
 		pos1 = pos2 + 1;
 	}

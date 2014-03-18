@@ -17,6 +17,7 @@ public:
 	virtual void clear();
 	int label(int i) const { return _labels[i]; }
     void addSample(const Vector& feature, int label);
+    Vector getTargetVector() const;
 protected:
 	virtual void readTarget(const String& item);
 	virtual void writeTarget(int i, Writer& writer);

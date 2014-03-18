@@ -14,7 +14,7 @@ public:
 	virtual void clear();
 	double value(int i) const { return _values[i]; }
 	void addSample(const Vector& feature, double value);
-	Vector getTargetVector();
+	Vector getTargetVector() const;
 protected:
 	virtual void readTarget(const String& item);
 	virtual void writeTarget(int i, Writer& writer);

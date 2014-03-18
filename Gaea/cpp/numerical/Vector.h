@@ -7,6 +7,8 @@
 
 namespace ycg {
 
+class Matrix;
+
 class Vector {
 public:
 	Vector();
@@ -18,6 +20,8 @@ public:
 	Vector& operator = (const Vector& rhs);
 	Vector& operator = (Vector&& rhs);
 	int size() const { return _size; };
+	double* data() { return _data; }
+	const double* data() const { return _data; }
 	double dotProd(const Vector& rhs) const;
 	double& operator [] (int index) { return _data[index]; }
     const double& operator [] (int index) const { return _data[index]; }
@@ -32,13 +36,16 @@ public:
     friend std::ostream& operator << (std::ostream& os, const Vector& vec);
     friend double dotProd(const Vector& lhs, const Vector& rhs);
     friend double normL2(const Vector& vec);
-//
+    friend double normL2Sqr(const Vector& vec);
+    friend class Matrix;
 //    Vector operator + (const Vector& rhs) const;
 
 
 //    Vector& operator *= (double k);
 public:
+    static Vector rand(int size);
     static double distanceL2(const Vector& lhs, const Vector& rhs);
+
 //    static double dotProduct(const Vector& lhs, const Vector& rhs);
 //    static double normL0(const Vector& vec);
 //    static double normL1(const Vector& vec);
@@ -58,6 +65,7 @@ Vector operator * (const Vector& lhs, double k);
 std::ostream& operator << (std::ostream& os, const Vector& vec);
 inline double dotProd(const Vector& lhs, const Vector& rhs) { return lhs.dotProd(rhs); }
 double normL2(const Vector& vec);
+double normL2Sqr(const Vector& vec);
 
 } //~ namespace ycg
 #endif // VECTOR_H
